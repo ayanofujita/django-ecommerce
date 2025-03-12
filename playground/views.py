@@ -75,4 +75,4 @@ def say_hello(request):
     # remove a shopping cart with its items
     # cart = Cart.objects.filter(pk=6).delete()
 
-    return render(request, 'hello.html', data)
+    return render(request, 'hello.html')
