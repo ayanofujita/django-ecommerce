@@ -1,8 +1,8 @@
 from django.shortcuts import render
-from django.http import HttpResponse
-from django.core.exceptions import ObjectDoesNotExist
-from django.db.models import F, Q, Count, Max, Min, Avg, Sum
-from store.models import Product, Customer, Collection, Order, OrderItem
+# from django.http import HttpResponse
+# from django.core.exceptions import ObjectDoesNotExist
+# from django.db.models import F, Q, Count, Max, Min, Avg, Sum
+from store.models import Product, Customer, Collection, Order, OrderItem, Cart, CartItem
 
 def say_hello(request):
     # try:
@@ -67,4 +67,12 @@ def say_hello(request):
 
     # }
 
-    return render(request, 'hello.html')
+    # create a shopping cart with an item
+    # cart = Cart.objects.create()
+    # cart_item1 = CartItem.objects.create(quantity=2, cart=cart, product=Product(pk=3))
+    # update the quantity of an item in a shopping cart
+    # cartItem = CartItem.objects.filter(pk=6).update(quantity=1)
+    # remove a shopping cart with its items
+    # cart = Cart.objects.filter(pk=6).delete()
+
+    return render(request, 'hello.html', data)
