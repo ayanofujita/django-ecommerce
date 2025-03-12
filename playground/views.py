@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from store.models import Product, Customer, Collection, Order, OrderItem
 from django.core.exceptions import ObjectDoesNotExist
+from django.db.models import F, Q, Count, Max, Min, Avg, Sum
+from store.models import Product, Customer, Collection, Order, OrderItem
 
 def say_hello(request):
     # try:
@@ -38,6 +39,32 @@ def say_hello(request):
     # data = Product.objects.filter(id__in=OrderItem.objects.values('product_id').distinct()).order_by('title')
     # for product in data: print(product.title, product.orderitem_set.count())
 
-    data = Order.objects.order_by('-placed_at')[:5].select_related('customer').prefetch_related('orderitem_set__product')
+    # data = Order.objects.order_by('-placed_at')[:5].select_related('customer').prefetch_related('orderitem_set__product')
 
-    return render(request, 'hello.html', {'orders': data})
+    # data = {
+    # • How many orders do we have?
+    # 'orders_count': Order.objects.aggregate(Count('id')),
+    # • How many units of product 1 have we sold?
+    # 'sold_product1': OrderItem.objects.filter(product_id=1, order__payment_status='C').aggregate(Sum('quantity')),
+    # • How many orders has customer 1 placed?
+    # 'c1_orders': Order.objects.filter(customer_id=1).aggregate(Count('id')),
+    # • What is the min, max and average price of the products in collection 3?
+    # 'min_max_avg': Product.objects.filter(collection_id=3).aggregate(Min('unit_price'), Max('unit_price'), Avg('unit_price'))
+    # }
+
+    # annotation challenge
+
+    # data = {
+    #     # Customers with their last order ID
+    #     'customers': Customer.objects.annotate(last_order_id=Max('order__id')),
+    #     # • Collections and count of their products
+    #     'collections': Collection.objects.annotate(product_count=Count('product__id')),
+    #     # • Customers with more than 5 orders
+    #     'morethan5': Customer.objects.annotate(order_count=Count('order')).filter(order_count__gt=5),
+    #     # • Customers and the total amount they’ve spent
+    #     'spent': Customer.objects.annotate(amount_spent=Sum(F('order__orderitem__quantity') * F('order__orderitem__unit_price'), filter=Q(order__payment_status= 'C')))
+    #     # • Top 5 best-selling products and their total sales
+
+    # }
+
+    return render(request, 'hello.html')
